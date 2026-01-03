@@ -8,10 +8,10 @@ high_score = 0
 
 # 設定螢幕
 wn = turtle.Screen()
-wn.title("貪食蛇遊戲 by Haruna")
+wn.title("貪食蛇遊戲 by Haruna - 進階版")
 wn.bgcolor("black")
 wn.setup(width=600, height=600)
-wn.tracer(0) # 關閉螢幕自動更新
+wn.tracer(0)
 
 # 蛇頭
 head = turtle.Turtle()
@@ -42,6 +42,13 @@ pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
 pen.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
+
+# --- 特色功能 1：隨機變色函數 ---
+def change_color():
+    colors = ["white", "yellow", "cyan", "magenta", "lime"]
+    new_color = random.choice(colors)
+    head.color(new_color)
+    pen.color(new_color) # 分數文字也跟著變色
 
 # 函數：控制方向
 def go_up():
@@ -83,6 +90,10 @@ wn.onkeypress(go_up, "Up")
 wn.onkeypress(go_down, "Down")
 wn.onkeypress(go_left, "Left")
 wn.onkeypress(go_right, "Right")
+wn.onkeypress(go_up, "w")  # 支援 WASD 鍵
+wn.onkeypress(go_down, "s")
+wn.onkeypress(go_left, "a")
+wn.onkeypress(go_right, "d")
 
 # 遊戲主迴圈
 while True:
@@ -94,13 +105,14 @@ while True:
         head.goto(0,0)
         head.direction = "stop"
         
-        # 隱藏蛇身
         for segment in segments:
             segment.goto(1000, 1000)
         segments.clear()
         
         score = 0
         delay = 0.1
+        head.color("white") # 重置顏色
+        pen.color("white")
         pen.clear()
         pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
@@ -110,7 +122,6 @@ while True:
         y = random.randint(-290, 290)
         food.goto(x,y)
 
-        # 增加蛇身
         new_segment = turtle.Turtle()
         new_segment.speed(0)
         new_segment.shape("square")
@@ -120,13 +131,16 @@ while True:
 
         delay -= 0.001
         score += 10
+        
+        # --- 特色功能 1 觸發點：每吃一個就變色 ---
+        change_color()
+
         if score > high_score:
             high_score = score
         
         pen.clear()
         pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
-    # 移動蛇身
     for index in range(len(segments)-1, 0, -1):
         x = segments[index-1].xcor()
         y = segments[index-1].ycor()
@@ -139,7 +153,6 @@ while True:
 
     move()    
 
-    # 檢查撞到自己
     for segment in segments:
         if segment.distance(head) < 20:
             time.sleep(1)
@@ -152,6 +165,8 @@ while True:
             
             score = 0
             delay = 0.1
+            head.color("white")
+            pen.color("white")
             pen.clear()
             pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
