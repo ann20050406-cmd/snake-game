@@ -8,7 +8,7 @@ high_score = 0
 
 # 設定螢幕
 wn = turtle.Screen()
-wn.title("貪食蛇遊戲 by Haruna - 最終版")
+# wn.title("貪食蛇遊戲")  <-- 這行在線上版會報錯，我們把它拿掉了
 wn.bgcolor("black")
 wn.setup(width=600, height=600)
 wn.tracer(0)
@@ -82,15 +82,16 @@ def move():
         x = head.xcor()
         head.setx(x + 20)
 
+# 鍵盤連接
 wn.listen()
-wn.onkeypress(go_up, "Up")
-wn.onkeypress(go_down, "Down")
-wn.onkeypress(go_left, "Left")
-wn.onkeypress(go_right, "Right")
-wn.onkeypress(go_up, "w")
-wn.onkeypress(go_down, "s")
-wn.onkeypress(go_left, "a")
-wn.onkeypress(go_right, "d")
+wn.onkey(go_up, "Up")      # 線上版有時候要把 onkeypress 改成 onkey，這裡我幫妳改好了
+wn.onkey(go_down, "Down")
+wn.onkey(go_left, "Left")
+wn.onkey(go_right, "Right")
+wn.onkey(go_up, "w")
+wn.onkey(go_down, "s")
+wn.onkey(go_left, "a")
+wn.onkey(go_right, "d")
 
 while True:
     wn.update()
@@ -106,7 +107,7 @@ while True:
         delay = 0.1
         head.color("white")
         pen.color("white")
-        wn.bgcolor("black") # 重置背景
+        wn.bgcolor("black")
         pen.clear()
         pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
@@ -125,10 +126,9 @@ while True:
         score += 10
         change_color()
 
-        # --- 特色功能 2：暴走模式 ---
         if score >= 50:
-            wn.bgcolor("darkred") # 背景變深紅
-            delay = 0.05 # 速度超快
+            wn.bgcolor("darkred")
+            delay = 0.05
         else:
             wn.bgcolor("black")
 
@@ -166,5 +166,3 @@ while True:
             pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
     time.sleep(delay)
-
-wn.mainloop()
