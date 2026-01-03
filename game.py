@@ -8,7 +8,7 @@ high_score = 0
 
 # 設定螢幕
 wn = turtle.Screen()
-# wn.title("貪食蛇遊戲")  <-- 這行在線上版會報錯，我們把它拿掉了
+# wn.title("貪食蛇遊戲")  
 wn.bgcolor("black")
 wn.setup(width=600, height=600)
 wn.tracer(0)
@@ -84,7 +84,7 @@ def move():
 
 # 鍵盤連接
 wn.listen()
-wn.onkey(go_up, "Up")      # 線上版有時候要把 onkeypress 改成 onkey，這裡我幫妳改好了
+wn.onkey(go_up, "Up")     
 wn.onkey(go_down, "Down")
 wn.onkey(go_left, "Left")
 wn.onkey(go_right, "Right")
