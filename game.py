@@ -8,7 +8,7 @@ high_score = 0
 
 # 設定螢幕
 wn = turtle.Screen()
-wn.title("貪食蛇遊戲 by Haruna - 進階版")
+wn.title("貪食蛇遊戲 by Haruna - 最終版")
 wn.bgcolor("black")
 wn.setup(width=600, height=600)
 wn.tracer(0)
@@ -43,14 +43,12 @@ pen.hideturtle()
 pen.goto(0, 260)
 pen.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
 
-# --- 特色功能 1：隨機變色函數 ---
 def change_color():
     colors = ["white", "yellow", "cyan", "magenta", "lime"]
     new_color = random.choice(colors)
     head.color(new_color)
-    pen.color(new_color) # 分數文字也跟著變色
+    pen.color(new_color)
 
-# 函數：控制方向
 def go_up():
     if head.direction != "down":
         head.direction = "up"
@@ -84,44 +82,38 @@ def move():
         x = head.xcor()
         head.setx(x + 20)
 
-# 鍵盤連接
 wn.listen()
 wn.onkeypress(go_up, "Up")
 wn.onkeypress(go_down, "Down")
 wn.onkeypress(go_left, "Left")
 wn.onkeypress(go_right, "Right")
-wn.onkeypress(go_up, "w")  # 支援 WASD 鍵
+wn.onkeypress(go_up, "w")
 wn.onkeypress(go_down, "s")
 wn.onkeypress(go_left, "a")
 wn.onkeypress(go_right, "d")
 
-# 遊戲主迴圈
 while True:
     wn.update()
 
-    # 檢查撞牆
     if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
         time.sleep(1)
         head.goto(0,0)
         head.direction = "stop"
-        
         for segment in segments:
             segment.goto(1000, 1000)
         segments.clear()
-        
         score = 0
         delay = 0.1
-        head.color("white") # 重置顏色
+        head.color("white")
         pen.color("white")
+        wn.bgcolor("black") # 重置背景
         pen.clear()
         pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
-    # 檢查吃到食物
     if head.distance(food) < 20:
         x = random.randint(-290, 290)
         y = random.randint(-290, 290)
         food.goto(x,y)
-
         new_segment = turtle.Turtle()
         new_segment.speed(0)
         new_segment.shape("square")
@@ -131,13 +123,17 @@ while True:
 
         delay -= 0.001
         score += 10
-        
-        # --- 特色功能 1 觸發點：每吃一個就變色 ---
         change_color()
+
+        # --- 特色功能 2：暴走模式 ---
+        if score >= 50:
+            wn.bgcolor("darkred") # 背景變深紅
+            delay = 0.05 # 速度超快
+        else:
+            wn.bgcolor("black")
 
         if score > high_score:
             high_score = score
-        
         pen.clear()
         pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
@@ -158,15 +154,14 @@ while True:
             time.sleep(1)
             head.goto(0,0)
             head.direction = "stop"
-            
             for segment in segments:
                 segment.goto(1000, 1000)
             segments.clear()
-            
             score = 0
             delay = 0.1
             head.color("white")
             pen.color("white")
+            wn.bgcolor("black")
             pen.clear()
             pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
